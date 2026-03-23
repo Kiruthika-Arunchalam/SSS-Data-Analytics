@@ -66,6 +66,7 @@ st.markdown('<div class="title">SSS DATA ANALYTICS (FEB)</div>', unsafe_allow_ht
 def load_data():
     url = "https://drive.google.com/uc?id=1T7O5A61vP1LulBdcTVBsL27bJvLDkM1j"
     return pd.read_csv(url)
+    df = load_data()
 
 # ---------------------------
 # DATE CLEAN
