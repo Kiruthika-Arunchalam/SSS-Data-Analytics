@@ -66,6 +66,10 @@ st.markdown('<div class="title">SSS DATA ANALYTICS (FEB)</div>', unsafe_allow_ht
 
 # ---------------------------
 # LOAD DATA
+import zipfile
+import requests
+import io
+
 @st.cache_data
 def load_data():
     url = "https://raw.githubusercontent.com/Kiruthika-Arunchalam/SSS-Data-Analytics/main/SSS_FEB/SSS-FEB.zip"
@@ -73,8 +77,17 @@ def load_data():
     r = requests.get(url)
     z = zipfile.ZipFile(io.BytesIO(r.content))
 
-    file_name = z.namelist()[0]
-    df = pd.read_csv(z.open(file_name))
+    # 🔥 Find actual CSV file
+    csv_file = None
+    for file in z.namelist():
+        if file.endswith(".csv"):
+            csv_file = file
+            break
+
+    if csv_file is None:
+        raise Exception("No CSV file found inside ZIP")
+
+    df = pd.read_csv(z.open(csv_file))
 
     return df
 
