@@ -77,7 +77,8 @@ def load_data():
 
     return df
 
-df = load_data()---------------
+df = load_data()
+#---------------
 # DATE CLEAN
 # ---------------------------
 df["Inserted_Date"] = pd.to_datetime(df["Inserted_At"]).dt.strftime('%Y-%m-%d')
