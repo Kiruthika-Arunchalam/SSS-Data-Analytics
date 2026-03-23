@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import gdown
+import os
 
 
 # ---------------------------
@@ -61,13 +63,19 @@ st.markdown('<div class="title">SSS DATA ANALYTICS (FEB)</div>', unsafe_allow_ht
 
 # ---------------------------
 # LOAD DATA
-# ---------------------------
 @st.cache_data
 def load_data():
-    url = "https://drive.google.com/uc?id=1T7O5A61vP1LulBdcTVBsL27bJvLDkM1j"
-    return pd.read_csv(url)
-df = load_data()
+    file_id = "1BYgnETwamXkMt_EUosS2TXELHjSoh_bK"
+    output = "data.csv"
 
+    # Download only once
+    if not os.path.exists(output):
+        url = f"https://drive.google.com/uc?id={file_id}"
+        gdown.download(url, output, quiet=False)
+
+    return pd.read_csv(output)
+
+df = load_data()
 # ---------------------------
 # DATE CLEAN
 # ---------------------------
