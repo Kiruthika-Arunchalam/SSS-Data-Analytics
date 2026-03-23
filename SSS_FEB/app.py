@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import gdown
 import os
+import zipfile
+import requests
 
 
 # ---------------------------
@@ -65,18 +67,17 @@ st.markdown('<div class="title">SSS DATA ANALYTICS (FEB)</div>', unsafe_allow_ht
 # LOAD DATA
 @st.cache_data
 def load_data():
-    file_id = "1BYgnETwamXkMt_EUosS2TXELHjSoh_bK"
-    output = "data.csv"
+    url = "https://raw.githubusercontent.com/Kiruthika-Arunchalam/SSS-Data-Analytics/main/SSS_FEB/SSS-FEB.zip"
 
-    # Download only once
-    if not os.path.exists(output):
-        url = f"https://drive.google.com/uc?id={file_id}"
-        gdown.download(url, output, quiet=False)
+    r = requests.get(url)
+    z = zipfile.ZipFile(io.BytesIO(r.content))
 
-    return pd.read_csv(output)
+    file_name = z.namelist()[0]
+    df = pd.read_csv(z.open(file_name))
 
-df = load_data()
-# ---------------------------
+    return df
+
+df = load_data()---------------
 # DATE CLEAN
 # ---------------------------
 df["Inserted_Date"] = pd.to_datetime(df["Inserted_At"]).dt.strftime('%Y-%m-%d')
